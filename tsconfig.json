@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "jsx": "react",
+    "outDir": "build",
+    "removeComments": false,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "rootDir": "./src",
+    "noEmitOnError": false
+  },
+  "compileOnSave": false,
+  "exclude": ["build"]
+}

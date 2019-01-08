@@ -1,0 +1,64 @@
+service: hello-world 
+
+provider:
+  name: tencent
+  region: ap-guangzhou
+  # 目前支持这些运行环境: Python2.7 Python3.6 Nodejs6.10 Java8 Nodejs8.9 Php5 Php7 Go1
+  runtime: Nodejs8.9
+  stage: prod
+  # 如果未配置，将会读取 tencentcloud-cli 的默认配置
+  # credentials: ~/.credentials.ini
+  # 以下作为默认参数，当 functions 中未配置时使用
+  # memorySize: 128
+  # timeout: 3
+  # vpc: vpc-kdo2woa5/subnet-02yntw7y
+  # gpu: on
+  # 环境变量会与 functions 中的配置进行合并
+  #  environment:
+  #    variable1: value1
+
+plugins:
+  - serverless-tencent-cloud-function
+
+# 打包文件列表
+package:
+  exclude:
+    - ./**
+  include:
+    - handler.js
+  
+# 云函数配置
+functions:
+  hello:
+    # 一段式格式为"[文件名]"，Golang 环境时使用，例如 "main";
+    # 两段式格式为"[文件名].[函数名]"，Python，Node.js，PHP 环境时使用，例如 "index.main_handler";
+    # 三段式格式为"[package].[class]::[method]",JAVA 环境时使用，例如 "example.Hello::mainHandler";
+    handler: handler.hello
+    description: hello world desc
+    memorySize: 128
+    timeout: 3
+    # vpc: vpc-kdo2woa5/subnet-02yntw7y
+    # gpu: on
+    # 触发器配置
+    events:
+      # 以下是各触发器配置示例
+      # - timer:
+      #     name: test
+      #     cron: "*/5 * * * *"
+      # - cos:
+      #     bucket: cos-test-1251762227.cos.ap-guangzhou.myqcloud.com
+      #     # 事件列表参考 https://cloud.tencent.com/document/product/583/9707
+      #     event: cos:ObjectCreated:*
+      #     prefix: start
+      #     suffix: .end
+      # - cmq:
+      #     instance: clue_test
+      # - ckafka:
+      #     instance: ckafka-1sgmd7l7
+      #     topic: aaa
+      #     batchSize: 1
+      # - apigw:
+      #     service: service-grz8j7ai
+      #     method: ANY
+      #     stage: test
+      #     auth: true

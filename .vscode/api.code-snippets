@@ -1,0 +1,16 @@
+{
+  "api-method": {
+    "scope": "typescript",
+    "prefix": "api-method",
+    "body": [
+      "  async $1(params: $1Request): Promise<$1Response>{",
+      "    return this.request(`$1`, params)",
+      "  }"
+    ]
+  },
+  "api-types": {
+    "scope": "typescript",
+    "prefix": "api-types",
+    "body": ["export interface $1Request{}", "export interface $1Response{}"]
+  }
+}
