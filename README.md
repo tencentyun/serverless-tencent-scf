@@ -161,7 +161,4 @@ tencent_app_id=1251******
 
 ### 内网代理
 
-受 [tencentcloud-sdk-nodejs](https://github.com/TencentCloud/tencentcloud-sdk-nodejs) 限制暂时不支持代理
-
-你可以尝试此[临时解决hack方案](https://github.com/TencentCloud/tencentcloud-sdk-nodejs/issues/14)
-
+如需使用代理，请配置 `https_proxy` 环境变量
