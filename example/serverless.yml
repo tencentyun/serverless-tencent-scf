@@ -18,7 +18,7 @@ provider:
   #    variable1: value1
 
 plugins:
-  - serverless-tencent-cloud-function
+  - serverless-tencent-scf
 
 # 打包文件列表
 package:

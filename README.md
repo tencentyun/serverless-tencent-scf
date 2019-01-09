@@ -1,4 +1,4 @@
-# serverless-tencent-cloud-function
+# serverless-tencent-scf
 
 本插件提供 [Serverless Framework](https://github.com/serverless/serverless) 对 [Tencent SCF(Serverless Cloud Function)](https://cloud.tencent.com/product/scf) 的支持.
 
@@ -36,7 +36,7 @@ provider:
   credentials: ~/.tencentcloud/credentials.ini # 必须提供绝对路径
 
 plugins:
-  - serverless-tencent-cloud-function
+  - serverless-tencent-scf
 
 package:
   exclude:
@@ -62,7 +62,7 @@ functions:
 ```json
 {
   "devDependencies": {
-    "serverless-tencent-cloud-function": "*"
+    "serverless-tencent-scf": "*"
   }
 }
 ```
@@ -137,7 +137,7 @@ tencent_app_id=1251******
 
 ### cos 授权
 
-当包文件大于 10MB 时，需要通过用户自己的 cos 上传包进行发布，上传操作需要本账号有中转 bucket(`serverless-cloud-function-deployment`)读写权限。你可以用主账号给当前账号[绑定相关 CAM 策略](https://cloud.tencent.com/document/product/436/11714)
+当包文件大于 10MB 时，需要通过用户自己的 cos 上传包进行发布，上传操作需要本账号有中转 bucket(`scf-deployment`)读写权限。你可以用主账号给当前账号[绑定相关 CAM 策略](https://cloud.tencent.com/document/product/436/11714)
 
 当然你也可以进行[更精确的 CAM 授权](https://cloud.tencent.com/document/product/598/11084)
 

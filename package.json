@@ -1,5 +1,5 @@
 {
-  "name": "serverless-tencent-cloud-function",
+  "name": "serverless-tencent-scf",
   "version": "0.0.1",
   "main": "build/index.js",
   "license": "MIT",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cyrilluce/serverless-tencent-cloud-function.git"
+    "url": "git+https://github.com/tencentyun/serverless-tencent-scf.git"
   },
   "keywords": [
     "serverless",
