@@ -32,17 +32,9 @@ export default class TencentGetConfig extends Plugin {
    */
   purifyServerlessConfig() {
     const config = this.serverless.service;
-    const functions = config.functions;
     return {
       provider: config.provider,
-      functions: Object.keys(functions)
-        .filter(name => {
-          const specifiedFunction = this.options["function"];
-          return !specifiedFunction || specifiedFunction === name;
-        })
-        .map<ServiceFunction>(name => {
-          return functions[name];
-        })
+      functions: config.functions
     };
   }
 }
