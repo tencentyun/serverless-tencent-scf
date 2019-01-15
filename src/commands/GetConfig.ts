@@ -21,7 +21,10 @@ export default class TencentGetConfig extends Plugin {
   };
   hooks = {
     "tencent:getconfig:getconfig": async () => {
-      this.json(this.serverless);
+      this.json({
+        success: true,
+        data: this.purifyServerlessConfig()
+      });
     }
   };
   /**

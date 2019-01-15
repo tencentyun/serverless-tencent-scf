@@ -22,7 +22,13 @@ import {
 export default class TencentDeploy extends Plugin {
   hooks = {
     "deploy:deploy": async () => {
-      await this.doDeploy();
+      try {
+        await this.doDeploy();
+        this.json({ success: true });
+      } catch (e) {
+        this.json({ success: false, error: e });
+        throw e;
+      }
     }
   };
   async doDeploy() {
@@ -152,7 +158,9 @@ export default class TencentDeploy extends Plugin {
 
     // 远端多出的，就是要删除的
     for (const [type, remote] of existsTriggers) {
-      this.log(`开始删除函数 ${f.name} 触发器 ${remote.Type}:${remote.TriggerName}`);
+      this.log(
+        `开始删除函数 ${f.name} 触发器 ${remote.Type}:${remote.TriggerName}`
+      );
       await this.provider.api.scf.DeleteTrigger({
         FunctionName: f.name,
         Type: remote.Type,
@@ -160,7 +168,9 @@ export default class TencentDeploy extends Plugin {
         TriggerDesc: remote.TriggerDesc
       });
       await remote.afterDelete(this.provider);
-      this.log(`删除函数 ${f.name} 触发器 ${remote.Type}:${remote.TriggerName} 完成`);
+      this.log(
+        `删除函数 ${f.name} 触发器 ${remote.Type}:${remote.TriggerName} 完成`
+      );
     }
     // 创建
     for (const trigger of needCreateTriggers) {
@@ -170,10 +180,14 @@ export default class TencentDeploy extends Plugin {
         TriggerName: trigger.TriggerName,
         TriggerDesc: trigger.TriggerDescForCreation
       };
-      this.log(`开始创建函数 ${f.name} 触发器 ${params.Type}:${params.TriggerName}`);
+      this.log(
+        `开始创建函数 ${f.name} 触发器 ${params.Type}:${params.TriggerName}`
+      );
       await trigger.beforeCreate(this.provider);
       await this.provider.api.scf.CreateTrigger(params);
-      this.log(`创建函数 ${f.name} 触发器 ${params.Type}:${params.TriggerName} 完成`);
+      this.log(
+        `创建函数 ${f.name} 触发器 ${params.Type}:${params.TriggerName} 完成`
+      );
     }
     if (!existsTriggers.size && !needCreateTriggers.length) {
       this.log(`函数 ${f.name} 触发器无需更新`);
@@ -192,7 +206,9 @@ export default class TencentDeploy extends Plugin {
     }
     // 其它情况通过cos上传
     this.debug(
-      `函数 ${func.name} 发布包超过 ${MAX_DIRECTLY_POST_PACKAGE_SIZE} 字节，使用cos方式上传`
+      `函数 ${
+        func.name
+      } 发布包超过 ${MAX_DIRECTLY_POST_PACKAGE_SIZE} 字节，使用cos方式上传`
     );
     await this.provider.api.cam.assureScfPolicy(SCF_CAM_POLICY_COS);
     const result = await this.provider.api.scf.upload(filePath, func);

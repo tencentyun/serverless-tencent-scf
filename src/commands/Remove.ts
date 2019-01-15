@@ -5,9 +5,15 @@ export default class TencentRemove extends Plugin {
     "remove:remove": async () => {
       for (const name of this.serverless.service.getAllFunctionsNames()) {
         this.log(`remove function: ${name}`);
-        await this.provider.api.scf.DeleteFunction({
-          FunctionName: name
-        });
+        try {
+          await this.provider.api.scf.DeleteFunction({
+            FunctionName: name
+          });
+          this.json({ success: true });
+        } catch (e) {
+          this.json({ success: false, error: e });
+          throw e;
+        }
       }
     }
   };

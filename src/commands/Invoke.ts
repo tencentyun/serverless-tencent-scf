@@ -1,5 +1,6 @@
 import Plugin from "../Plugin";
 import { readFileSync } from "fs";
+import { InvokeResponse } from "../api/scf/scf";
 
 export default class TencentInvoke extends Plugin {
   hooks = {
@@ -17,13 +18,21 @@ export default class TencentInvoke extends Plugin {
       ClientContext = readFileSync(this.options.path).toString();
     }
 
-    const result = await this.provider.api.scf.Invoke({
-      FunctionName: functionName,
-      ClientContext
-    });
+    let result: InvokeResponse;
+    try {
+      result = await this.provider.api.scf.Invoke({
+        FunctionName: functionName,
+        ClientContext
+      });
+    } catch (e) {
+      this.json({ success: false, error: e });
+      throw e;
+    }
     if (result.Result.InvokeResult) {
+      this.json({ success: false, error: result.Result.ErrMsg });
       throw new Error(result.Result.ErrMsg);
     }
+    this.json({ success: true, data: result });
     this.log(`调用 ${functionName} 成功, 结果: ${result.Result.RetMsg}`);
   }
 }
