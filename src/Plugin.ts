@@ -59,7 +59,7 @@ export default abstract class Plugin {
       this.hasJsonOutput = true;
       this.log(`jsonBoundary(${this.jsonBoundary})`);
     }
-    return this.serverless.cli.log(
+    return this.log(
       `${jsonBoundary}(${JSON.stringify(data)})${jsonBoundary}`
     );
   }

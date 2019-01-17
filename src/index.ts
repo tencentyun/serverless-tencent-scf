@@ -1,5 +1,6 @@
 import Plugin from "./Plugin";
 import Provider from "./Provider";
+import GetConfig from "./commands/GetConfig";
 import Deploy from "./commands/Deploy";
 import Invoke from "./commands/Invoke";
 import Logs from "./commands/Logs";
@@ -13,7 +14,7 @@ class Tencent extends Plugin {
     super(serverless, options);
     this.formulaService();
     this.serverless.pluginManager.addPlugin(Provider);
-    for (const P of [Deploy, Invoke, Logs, Remove, InitCAM]) {
+    for (const P of [GetConfig, Deploy, Invoke, Logs, Remove, InitCAM]) {
       this.serverless.pluginManager.addPlugin(P);
     }
   }
