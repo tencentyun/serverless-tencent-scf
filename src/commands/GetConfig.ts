@@ -33,6 +33,7 @@ export default class TencentGetConfig extends Plugin {
   purifyServerlessConfig() {
     const config = this.serverless.service;
     return {
+      name: config.service,
       provider: config.provider,
       functions: config.functions
     };

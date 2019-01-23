@@ -22,7 +22,8 @@ export default class TencentInvoke extends Plugin {
     try {
       result = await this.provider.api.scf.Invoke({
         FunctionName: functionName,
-        ClientContext
+        ClientContext,
+        LogType: 'Tail'
       });
     } catch (e) {
       this.json({ success: false, error: e });
