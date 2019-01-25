@@ -1,6 +1,6 @@
 import Plugin from "../Plugin";
 import { Writable } from "stream";
-import { FunctionLog } from "../api/scf/scf";
+import { FunctionLog, Filter } from "../api/scf/scf";
 import * as moment from "moment";
 import chalk from "chalk";
 import { EOL } from "os";
@@ -8,6 +8,15 @@ import { EOL } from "os";
 const API_DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";
 
 export default class TencentLogs extends Plugin {
+  commands = {
+    logs: {
+      options: {
+        requestId: {
+          usage: "RequestId"
+        }
+      }
+    }
+  };
   hooks = {
     "logs:logs": async () => {
       await this.logs(process.stdout);
@@ -58,6 +67,7 @@ export default class TencentLogs extends Plugin {
       }
       const startTime = lastTimestamp ? lastTimestamp + 1000 : initTimestamp;
       const logs = await this.getLogs(functionName, startTime);
+      this.json(logs);
       for (const log of logs) {
         output.write(this.formatLog(log));
         lastTimestamp = moment(log.StartTime, API_DATE_FORMAT)
@@ -68,7 +78,12 @@ export default class TencentLogs extends Plugin {
     } while (loop);
   }
   async getLogs(functionName: string, startTime?: number) {
-    let Filter;
+    let Filter: Filter;
+    let FunctionRequestId: string;
+    if (this.options.requestId) {
+      FunctionRequestId = this.options.requestId;
+    }
+
     if (this.options.filter) {
       try {
         Filter = JSON.parse(this.options.filter);
@@ -80,9 +95,11 @@ export default class TencentLogs extends Plugin {
         );
       }
     }
+
     let StartTime: string;
     let EndTime: string;
-    if (startTime) {
+    // FunctionRequestId是最优先的
+    if (!FunctionRequestId && startTime) {
       StartTime = moment(startTime).format(API_DATE_FORMAT);
       EndTime = moment()
         .add(30 * 1000)
@@ -95,6 +112,7 @@ export default class TencentLogs extends Plugin {
       OrderBy: "start_time",
       Order: "asc",
       Filter,
+      FunctionRequestId,
       StartTime,
       EndTime
     });

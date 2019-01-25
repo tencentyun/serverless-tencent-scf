@@ -11,6 +11,7 @@ export interface Serverless {
   classes: any
 }
 export interface Service {
+  service: string
   provider: ServiceProvider;
   package: ServicePackage;
   plugins: string[];
