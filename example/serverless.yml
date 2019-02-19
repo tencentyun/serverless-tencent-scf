@@ -22,6 +22,8 @@ plugins:
 
 # 打包文件列表
 package:
+  # serverless某个版本有bug，会导致out of memory，先关闭此选项
+  excludeDevDependencies: false
   exclude:
     - ./**
   include:
