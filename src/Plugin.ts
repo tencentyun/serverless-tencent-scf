@@ -60,7 +60,7 @@ export default abstract class Plugin {
       this.log(`jsonBoundary(${this.jsonBoundary})`);
     }
     return this.log(
-      `${jsonBoundary}(${JSON.stringify(data)})${jsonBoundary}`
+      `${this.jsonBoundary}(${JSON.stringify(data)})${this.jsonBoundary}`
     );
   }
   makeError(err: any) {

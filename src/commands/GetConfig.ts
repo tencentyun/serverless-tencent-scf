@@ -13,7 +13,7 @@ export default class TencentGetConfig extends Plugin {
       usage: `腾讯云相关指令`,
       commands: {
         getconfig: {
-          usage: `初始化腾讯云SCF角色授权`,
+          usage: `(私有指令)获取项目配置`,
           lifecycleEvents: ["getconfig"]
         }
       }
