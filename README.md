@@ -63,9 +63,9 @@ For more examples of trigger configuration, please refer to [example/serverless.
 
 ```json
 {
-  "devDependencies": {
-    "serverless-tencent-scf": "*"
-  }
+  "devDependencies": {
+    "serverless-tencent-scf": "*"
+  }
 }
 ```
 
