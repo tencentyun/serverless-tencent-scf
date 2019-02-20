@@ -1,21 +1,23 @@
 # serverless-tencent-scf
 
-本插件提供 [Serverless Framework](https://github.com/serverless/serverless) 对 [Tencent SCF(Serverless Cloud Function)](https://cloud.tencent.com/product/scf) 的支持.
+This plugin enables [Tencent SCF (Serverless Cloud Function)] (https://cloud.tencent.com/product/scf) support for [Serverless Framework] (https://github.com/serverless/serverless).
 
-## 开始使用
+*Read this in other languages: [English](README.md), [简体中文](README.zh-hans.md)*
 
-### 前置需求
+## Getting started
+
+### Pre-requisites
 
 - Node.js v8.x+
-- Serverless CLI v1.35.0+ (通过 `npm i -g serverless` 安装)
-- Qcloud 帐号
-  - APPID
-  - SecretId
-  - SecretKey
+- Serverless CLI v1.35.0+ (install via `npm i -g serverless`)
+- Qcloud account
+  - APPID
+  - SecretId
+  - SecretKey
 
-### 示例
+###example
 
-项目文件结构类似这样:
+The project file structure is similar to this:
 
 ```
 ├── index.js
@@ -33,7 +35,7 @@ provider:
   region: ap-guangzhou
   runtime: Nodejs8.9
   stage: dev
-  credentials: ~/.tencentcloud/credentials.ini # 必须提供绝对路径
+  credentials: ~/.tencentcloud/credentials.ini # must provide absolute path
 
 plugins:
   - serverless-tencent-scf
@@ -55,15 +57,15 @@ functions:
           name: 5m
           cron: "*/5 * * * *"
 ```
-更多触发器配置示例请参考[example/serverless.yml](example/serverless.yml)
+For more examples of trigger configuration, please refer to [example/serverless.yml](example/serverless.yml)
 
 `package.json`:
 
 ```json
 {
-  "devDependencies": {
-    "serverless-tencent-scf": "*"
-  }
+  "devDependencies": {
+    "serverless-tencent-scf": "*"
+  }
 }
 ```
 
@@ -73,11 +75,11 @@ functions:
 "use strict";
 
 exports.hello = (event, context, callback) => {
-  callback(null, "Hello world!");
+  callback(null, "Hello world!");
 };
 ```
 
-API 密钥配置`credentials.ini`:
+API key configuration `credentials.ini`:
 
 ```ini
 [default]
@@ -86,79 +88,84 @@ tencent_secret_key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 tencent_app_id=1251******
 ```
 
-**此文件包含敏感信息，请勿放在项目目录下**，建议将它放在个人目录，并以绝对路径配置到 provider.credentials 。
+**This file contains sensitive information, please do not put it in the project directory**, it is recommended to put it in your personal directory and configure it to provider.credentials with an absolute path.
 
-如果不配置此项，将会使用[tencentcli](https://github.com/TencentCloud/tencentcloud-cli)的默认配置，但因为没有 APPID，所以部分功能无法使用，具体见FAQ。
+If you do not configure `provider.credentials`, the default credential configuration of [tencentcli] (https://github.com/TencentCloud/tencentcloud-cli) will be used, but some features cannot work because there is no `APPID`, see FAQ.
 
-以下是各信息的获取途径
+The following is the access to each information.
 
-- `tencent_secret_id` 及 `tencent_secret_key` 云 API 密钥，可以在 [腾讯云-API 密钥管理](https://console.cloud.tencent.com/cam/capi) 查询到。如果没有，请新建
-- `tencent_app_id` 腾讯云账号的 APPID，可以在 [腾讯云-账号中心](https://console.cloud.tencent.com/developer) 查询到
+- The `tencent_secret_id` and `tencent_secret_key` cloud API keys can be queried in [Tencent Cloud-API Key Management] (https://console.cloud.tencent.com/cam/capi). If not, please create a new one.
+- `tencent_app_id` The APPID of Tencent Cloud account can be found in [Tencent Cloud-Account Center] (https://console.cloud.tencent.com/developer)
 
-### 开发&发布
+### Development & Publishing
+- Initial Tencent SCF plugin:
 
-- 部署或更新 scf 到腾讯云:
+  ```console
+  serverless plugin install --name serverless-tencent-scf
+  ```
+
+- Deploy or update scf to Tencent Cloud:
 
   ```console
   serverless deploy
   ```
 
-  TIP: `serverless`指令可以简化为`sls`，即使用`sls deploy`发布
+  TIP: The command `sls` is shortcut of `serverless`, so you can simply use `sls deploy`
 
-- 从腾讯云删除 scf:
+- Removed from Tencent Cloud scf:
 
   ```console
   serverless remove
   ```
 
-- 远程调用
+- Remote call
 
   ```console
-  serverless invoke -f=hello
+  serverless invoke -f hello
   ```
 
-- 日志查询
+- Log query
 
   ```console
-  serverless logs -f=hello
+  serverless logs -f hello
   ```
 
-## 常见问题 FAQ
+## FAQ
 
 ### APPID
 
-示例中 `provider.credentials` 额外配置了 `tencent_app_id`，它不是必选项，只在部分功能下需要使用
+In the example `provider.credentials` is additionally configured with `tencent_app_id`, which is optional and only required by some functions.
 
-以下是需要使用 APPID 的功能
+Here are the features that need to use APPID
 
-- 大于 10MB 的包文件发布
+- Release package file larger than 10MB
 
-如果未配置，则执行到以上功能时会提示错误
+If not configured, an error will be displayed when performing the above functions.
 
-### cos 授权
+### cos Authorization
 
-当包文件大于 10MB 时，需要通过用户自己的 cos 上传包进行发布，上传操作需要本账号有中转 bucket(`scf-deployment`)读写权限。你可以用主账号给当前账号[绑定相关 CAM 策略](https://cloud.tencent.com/document/product/436/11714)
+When the package file is larger than 10MB, it will upload package via user's own cos. The upload operation requires the account to have the read and write permissions of the transfer bucket (`scf-deployment`). If you are using sub-account, you can login owner account [associate CAM policy] (https://cloud.tencent.com/document/product/436/11714) to sub-account
 
-当然你也可以进行[更精确的 CAM 授权](https://cloud.tencent.com/document/product/598/11084)
+Of course you can also do [more precise CAM authorization] (https://cloud.tencent.com/document/product/598/11084)
 
-### 角色授权
+### Role Authorization
 
-以下是需要给 scf 角色授予相关权限的功能
+Here are the features that need to grant permissions to the scf role.
 
-- [云对象存储-cos](https://console.cloud.tencent.com/cos)
+- [Cloud Object Storage - cos] (https://console.cloud.tencent.com/cos)
 
-  - 当包文件大于 10MB 时，会通过 cos 上传包文件进行发布，scf 需要访问用户上传的包文件
-  - cos 触发器
+  - When the package file is larger than 10MB, it will upload package file via cos, and scf needs to access the user-uploaded package file.
+  - cos trigger
 
-- [API 网关-API Gateway](https://console.cloud.tencent.com/apigateway)
-  - API 网关触发器
+- [API Gateway - API Gateway] (https://console.cloud.tencent.com/apigateway)
+  - API Gateway Trigger
 
-通常它是由工具自动化完成的，但如果你在使用子账号密钥，而当前云账号没有进行初始角色创建与授权，并且没有权限进行相关操作时会报错。
+Usually it is automate authorized by the tool, but if you are using a sub-account secret key, and the current cloud account does not have initial role creation and authorization, and there is no permission to perform initial operations, an error will be reported.
 
-你可以换用主账号执行一次`serverless tencent initcam`，这样就会初始化角色授权，使得 scf 可以访问其它业务资源（如对象存储、API 网关等）
+You can use the primary account to execute `serverless tencent initcam`, which will initialize the role authorization, so that scf can access other business resources (such as object storage, API gateway, etc.)
 
-访问 [腾讯云-访问管理-角色](https://console.cloud.tencent.com/cam/role) 可以查看 scf 角色(`SCF_QcsRole`) 已绑定的策略
+Visit [Tencent Cloud - Access Management - Roles] (https://console.cloud.tencent.com/cam/role) to view the strategy that the scf role (`SCF_QcsRole`) is bound to.
 
-### 内网代理
+### proxy
 
-如需使用代理，请配置 `https_proxy` 环境变量
+To use a proxy, configure the `https_proxy` environment variable
