@@ -83,9 +83,9 @@ API key configuration `credentials.ini`:
 
 ```ini
 [default]
-Tencent_secret_id=AKIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-Tencent_secret_key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-Tencent_app_id=1251******
+tencent_secret_id=AKIxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+tencent_secret_key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+tencent_app_id=1251******
 ```
 
 **This file contains sensitive information, please do not put it in the project directory**, it is recommended to put it in your personal directory and configure it to provider.credentials with an absolute path.
