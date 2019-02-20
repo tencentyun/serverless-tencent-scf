@@ -20,20 +20,25 @@ import {
 } from "../constants";
 
 export default class TencentDeploy extends Plugin {
-  hooks = {
-    "deploy:deploy": async () => {
-      try {
-        await this.doDeploy();
-        this.json({ success: true });
-      } catch (e) {
-        this.json({ success: false, error: e });
-        throw e;
-      }
+  private getAllFunctionsTask: Promise<Function[]>;
+  deployJob = async () => {
+    try {
+      await this.doDeploy();
+      this.json({ success: true });
+    } catch (e) {
+      this.json({ success: false, error: e });
+      throw e;
     }
+  };
+  hooks = {
+    "deploy:deploy": this.deployJob,
+    "deploy:function:packageFunction": () =>
+      this.serverless.pluginManager.spawn("package:function"),
+    "deploy:function:deploy": this.deployJob
   };
   async doDeploy() {
     // 判断是否已经有函数
-    const functions = await this.getAllFunctions();
+    const functions = await this.cacheGetAllFunctions();
     const map = new Map<string, Function>();
     for (const f of functions) {
       map.set(f.FunctionName, f);
@@ -196,7 +201,8 @@ export default class TencentDeploy extends Plugin {
     }
   }
   async getServiceCode(func: ServiceFunction): Promise<Code> {
-    const filePath = this.serverless.service.package.artifact;
+    const filePath =
+      func.package.artifact || this.serverless.service.package.artifact;
     // 当文件小时，直接提交
     const size = statSync(filePath).size;
     if (size < MAX_DIRECTLY_POST_PACKAGE_SIZE) {
@@ -230,6 +236,12 @@ export default class TencentDeploy extends Plugin {
       .map<ServiceFunction>(name => {
         return functions[name];
       });
+  }
+  async cacheGetAllFunctions() {
+    if (!this.getAllFunctionsTask) {
+      this.getAllFunctionsTask = this.getAllFunctions();
+    }
+    return await this.getAllFunctionsTask;
   }
   async getAllFunctions() {
     const maxPageSize = 100;

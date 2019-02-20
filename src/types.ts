@@ -8,10 +8,10 @@ export interface Serverless {
   setProvider(name: string, provider: any);
   getProvider(name: string);
   service: Service;
-  classes: any
+  classes: any;
 }
 export interface Service {
-  service: string
+  service: string;
   provider: ServiceProvider;
   package: ServicePackage;
   plugins: string[];
@@ -24,7 +24,7 @@ export interface Service {
 export interface ServiceProvider {
   /** 如：aws、tencent */
   name: string;
-  namespace?: string
+  namespace?: string;
   region: string;
   runtime: string;
   credentials: string;
@@ -43,7 +43,7 @@ export interface ServicePackage {
 }
 export interface ServiceFunction {
   name?: string;
-  namespace?: string
+  namespace?: string;
   handler: string;
   description?: string;
   events?: ServiceFunctionTriggerWrap[];
@@ -54,10 +54,11 @@ export interface ServiceFunction {
   environment?: {
     [key: string]: string;
   };
+  package: ServicePackage;
 }
 
-export interface ServiceFunctionTriggerWrap{
-  [type: string]: ServiceFunctionTrigger
+export interface ServiceFunctionTriggerWrap {
+  [type: string]: ServiceFunctionTrigger;
 }
 
 export type ServiceFunctionTrigger =
@@ -102,7 +103,8 @@ interface PluginClass {
 }
 interface PluginManager {
   addPlugin(Plugin: PluginClass);
+  spawn(cmd: string);
 }
 export interface ServerlessOptions {
-  [key: string]: any
+  [key: string]: any;
 }
