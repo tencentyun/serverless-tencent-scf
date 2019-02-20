@@ -101,34 +101,34 @@ The following is the access to each information.
 - Initial Tencent SCF plugin:
 
   ```console
-  serverless plugin install --name serverless-tencent-scf
-  ```
+  serverless plugin install --name serverless-tencent-scf
+  ```
 
 - Deploy or update scf to Tencent Cloud:
 
-  ```console
-  serverless deploy
-  ```
+  ```console
+  serverless deploy
+  ```
 
   TIP: The command `sls` is shortcut of `serverless`, so you can simply use `sls deploy`
 
 - Removed from Tencent Cloud scf:
 
-  ```console
-  serverless remove
-  ```
+  ```console
+  serverless remove
+  ```
 
 - Remote call
 
-  ```console
-  serverless invoke -f hello
-  ```
+  ```console
+  serverless invoke -f hello
+  ```
 
 - Log query
 
-  ```console
-  serverless logs -f hello
-  ```
+  ```console
+  serverless logs -f hello
+  ```
 
 ## FAQ
 

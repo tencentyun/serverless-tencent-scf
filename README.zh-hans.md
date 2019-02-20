@@ -101,8 +101,8 @@ tencent_app_id=1251******
 - 插件初始安装:
 
   ```console
-  serverless plugin install --name serverless-tencent-scf
-  ```
+  serverless plugin install --name serverless-tencent-scf
+  ```
 
 - 部署或更新 scf 到腾讯云:
 
